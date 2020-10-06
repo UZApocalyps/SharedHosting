@@ -20,12 +20,12 @@ sudo passwd $userName
 sudo mkdir /home/$userName/www
 sudo chown $userName:$userName /home/$userName/www 
 sudo cp default.php /home/$userName/www/index.php
-sudo chown $userName:$userName /home/$userName/www/index.php
 
 # Create MariaDB DB
-sudo mysql -p <<< "CREATE DATABASE " $userName ";"
-sudo mysql -p <<< "CREATE USER " $userName " IDENTIFIED BY '" $userPassword "';"
-sudo mysql -p <<< "GRANT ALL privileges ON " $userName ".* TO '" $userPassword "'@'localhost';"
+sudo mysql -p <<< "CREATE DATABASE "$userName";"
+sudo mysql -p <<< "CREATE USER "$userName" IDENTIFIED BY '"$userPassword"';"
+echo "USE "$userName"; GRANT ALL ON "$userName" TO '"$userName"'@'%';"
+sudo mysql -p <<< "USE "$userName"; GRANT ALL ON "$userName" TO '"$userName"'@'%';"
 
 # Sort usedPorts
 sudo sort -t, -k2 -n usedPorts -o usedPorts
