@@ -2,6 +2,7 @@ $userName
 $userPassword
 $freePort
 
+
 echo "User Name: " 
 read -r userName
 
@@ -20,6 +21,7 @@ sudo passwd $userName
 sudo mkdir /home/$userName/www
 sudo chown $userName:$userName /home/$userName/www 
 sudo cp default.php /home/$userName/www/index.php
+sudo touch usedPorts
 
 # Create MariaDB DB
 sudo mysql -p <<< "CREATE DATABASE "$userName";"
