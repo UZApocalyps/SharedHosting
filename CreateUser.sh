@@ -19,8 +19,9 @@ sudo useradd -m $userName
 sudo passwd $userName
 
 sudo mkdir /home/$userName/www
-sudo chown $userName:$userName /home/$userName/www 
+sudo chown $userName:www-data /home/$userName/www 
 sudo cp default.php /home/$userName/www/index.php
+sudo chown $userName:www-data /home/$userName/www/index.php
 sudo touch usedPorts
 
 # Create MariaDB DB
@@ -55,11 +56,16 @@ echo "$userName,$freePort" >> usedPorts
 # Create Nginx site
 cp _type $userName
 sed -i -e "s/\${port}/$freePort/" -e "s/\${userName}/$userName/" $userName
+
+cp www.conf $userName.conf
+sed -i -e "s/\${userName}/$userName/" $userName.conf
+sudo mv $userName.conf /etc/php/7.3/fpm/pool.d/
 sudo mv $userName /etc/nginx/sites-available/$userName
 sudo ln -s /etc/nginx/sites-available/$userName /etc/nginx/sites-enabled/$userName 
 
-sudo service nginx restart
+sudo service php7.3-fpm restart
 
+sudo service nginx restart
 echo "DONE"
 
 
