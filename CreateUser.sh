@@ -20,9 +20,11 @@ sudo passwd $userName
 
 sudo mkdir /home/$userName/www
 sudo chown $userName:www-data /home/$userName/www 
+sudo chown $userName:www-data /home/$userName
+sudo chmod o-rx /home/$userName
 sudo cp default.php /home/$userName/www/index.php
 sudo chown $userName:www-data /home/$userName/www/index.php
-sudo touch usedPorts
+touch usedPorts
 
 # Create MariaDB DB
 sudo mysql -p <<< "CREATE DATABASE "$userName";"
