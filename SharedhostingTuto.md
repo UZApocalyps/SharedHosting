@@ -39,18 +39,6 @@ Installer git pour que les utiliseurs puissent directement cloner sur le serveur
 
 *sudo apt-get install git*
 
-Lorsque tous les services sont installés il faut configurer nginx pour fonctionner avec le php pour cela il faut éditer :
-
-*/etc/nginx/sites-available/default*
-
-et décommenter :
-
-`
-location ~ \.php$ {
-                include snippets/fastcgi-php.conf;
-                fastcgi_pass unix:/run/php/php7.3-fpm.sock;
-        }
-`
 
 
 
@@ -78,11 +66,13 @@ L'emplacement du site sera dans le dossier "home" de l'utilisateur.
 
 ## Configuration automatique 
 
-Cloner le git suivant :
+Cloner le git suivant dans votre dossier home :
 
-*sudo git clone https://github.com/gabrielrossier/SharedHosting.git*
+*git clone https://github.com/gabrielrossier/SharedHosting.git*
 
 puis bloquer l'accès au dossier au autres utilisateurs.
+
+*sudo chmod o-rwx /home/"votre username"
 
 *sudo chmod o-rwx /SharedHosting/* *
 
@@ -94,18 +84,84 @@ Il faut lancer le script :
 
 Suivre les instructions
 
+**ATTENTION IL FAUT IMPERATIVEMENT ECRIRE JUSTE LE MOT DE PASSE A CHAQUE FOIS QUE LE SCRIPTS VOUS LE DEMANDE**
 
 
 
 
 ## Configuration manuelle
+Dans le dossier home de votre utilisateur administrateur, cloner le repos suivant :
+
+*git clone https://github.com/gabrielrossier/SharedHosting.git*
+
+
 On commence par créer un utilisateur "test" avec la commande :
 
 *sudo useradd -m test*
 
-Ensuite 
+Changer le mot de passe de l'utilisateur avec :
 
-mysql -p**** <<< "CREATE DATABASE test; "
+*sudo passwd test*
 
 
 
+
+### Structure de fichier
+
+On va maintenant créer la structure de fichier dans le dossier home de l'utilisateur test
+
+*sudo mkdir /home/test/www*
+
+*sudo chown test:www-data /home/test*
+
+*sudo chown test:www-data /home/test/www*
+
+*sudo chmod o-rwx /home/test*
+
+*sudo cp /home/MonCompteAdmin/SharedHosting/default.php /home/test/www/index.php*
+
+*sudo chown test:www-data /home/test/www/index.php*
+
+### Base de données
+
+Connectez-vous à la base de données avec la commande :
+
+*sudo mysql*
+
+Ensuite entrez les commandes suivante :
+
+*CREATE DATABASE test;*
+
+*CREATE USER "test" IDENTIFIED BY "1234";*
+
+*USE test;*
+
+*GRANT ALL ON test TO "test"@"%";*
+
+
+### Configuration NGINX et PHP-FPM
+
+Rendez-vous dans le repos SharedHosting.
+
+Ensuite executez les commandes suivantes :
+
+*cp _type test*
+
+*sed -i -e "s/\\${port}/UnPortDisponible/" -e "s/\\${userName}/test/" test*
+
+*cp www.conf test.conf*
+
+*sed -i -e "s/\\${userName}/test/" test.conf*
+
+*sudo mv test.conf /etc/php/7.3/fpm/pool.d/*
+
+*sudo mv test /etc/nginx/sites-available/test*
+
+*sudo ln -s /etc/nginx/sites-available/test /etc/nginx/sites-enabled/test*
+
+*sudo service php7.3-fpm restart*
+
+*sudo service nginx restart*
+
+
+Voilà le site est maintenant disponible sur le port choisi.
