@@ -17,6 +17,7 @@ echo "User Password: "
 # Create Linux user
 sudo useradd -m $userName
 sudo passwd $userName
+sudo usermod --shell /bin/bash $userName # useradd sets the shell to /bin/sh by default. /bin/bash is supperior for a terminal experience
 
 sudo mkdir /home/$userName/www
 sudo chown $userName:www-data /home/$userName/www 
