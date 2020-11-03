@@ -165,3 +165,11 @@ Ensuite executez les commandes suivantes :
 
 
 Voilà le site est maintenant disponible sur le port choisi.
+
+
+
+# Isolation
+
+Il y a deux éléments qui font que l'isolation fonctionne, le premier est le plus simple utilisateur "other" n'ont pas les droit de lecture ni d'écriture sur les dossiers home des autres.
+
+Le deuxième élément est dans la configuration de php fpm (www.conf) il y a une ligne "user" et une autre "group". Ces deux lignes, définisse quel utilisateur va executer les fonctions php. Par défaut le "user" est "www-data" qui est l'utilisateur de NGINX. Le problème si on laisse ça par défaut, c'est que n'importe quel script php aura les accès de www-data donc accès aux autres home. C'est pour cela que l'on change cette valeur par le nom d'utilisateur.
