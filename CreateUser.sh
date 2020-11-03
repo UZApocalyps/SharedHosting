@@ -27,10 +27,9 @@ sudo chown $userName:www-data /home/$userName/www/index.php
 touch usedPorts
 
 # Create MariaDB DB
-sudo mysql -p <<< "CREATE DATABASE "$userName";"
-sudo mysql -p <<< "CREATE USER "$userName" IDENTIFIED BY '"$userPassword"';"
-echo "USE "$userName"; GRANT ALL ON "$userName" TO '"$userName"'@'%';"
-sudo mysql -p <<< "USE "$userName"; GRANT ALL ON "$userName" TO '"$userName"'@'%';"
+sudo mysql <<< "CREATE DATABASE "$userName";"
+sudo mysql <<< "CREATE USER "$userName" IDENTIFIED BY '"$userPassword"';"
+sudo mysql <<< "USE "$userName"; GRANT ALL ON "$userName" TO '"$userName"'@'%';"
 
 # Sort usedPorts
 sudo sort -t, -k2 -n usedPorts -o usedPorts
