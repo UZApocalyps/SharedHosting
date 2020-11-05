@@ -1,5 +1,7 @@
 # Installation SharedHosting
 
+*Membres du groupe: Gabriel Rossier & Dimitri Imfeld*
+
 Télécharger l'ISO de debian sur leur site web :
 [debian ISO](https://www.debian.org/distrib/netinst#smallcd)
 
